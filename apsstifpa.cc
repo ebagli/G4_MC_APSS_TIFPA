@@ -49,7 +49,7 @@ int main(int argc,char** argv)
 {
     // Construct the default run manager
     G4MTRunManager* runManager = new G4MTRunManager;
-    runManager->SetNumberOfThreads(8);
+    runManager->SetNumberOfThreads(G4Threading::G4GetNumberOfCores() - 2);
 
     // Activate UI-command base scorer
     G4ScoringManager * scManager = G4ScoringManager::GetScoringManager();

@@ -36,19 +36,14 @@ file(GLOB headers ${PROJECT_SOURCE_DIR}/include/*.hh)
 # GB01project. This is so that we can run the executable directly
 # because it relies on these scripts being in the current working directory.
 #
-set(project_SCRIPTS
-  apsstifpa.in
-  apsstifpa_collimated.in
-  )
-
-foreach(_script ${project_SCRIPTS})
-  configure_file(
-    ${PROJECT_SOURCE_DIR}/${_script}
-    ${PROJECT_BINARY_DIR}/${_script}
-    COPYONLY
-    )
+file(GLOB _mac RELATIVE ${PROJECT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}/mac/*.in)
+foreach(_mac ${_mac})
+     configure_file(
+	${PROJECT_SOURCE_DIR}/${_mac}
+     	${PROJECT_BINARY_DIR}/${_mac}
+	COPYONLY
+	)
 endforeach()
-
 
 
 #----------------------------------------------------------------------------

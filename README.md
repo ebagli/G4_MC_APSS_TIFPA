@@ -19,12 +19,12 @@ The three main reference papers for Geant4 are:
 
 The source code can be found also on [GitHub](https://github.com/Geant4/geant4/tree/geant4-10.3-release).
 
-After the installation of the Geant4 10.3 libraries, the code can be compiled via cmake (www.cmake.org).
+After the installation of the Geant4 10.3 libraries, the code can be compiled via [CMake](www.cmake.org).
 
 ## Usage
 
 The application can be launched via the apsstifpa executable and the macros
 
-`./apsstifpa apsstifpa.in`
+`./apsstifpa mac/vacuum.in`
 
 The output of the application is a [ROOT](https://root.cern.ch) file with the hit position on the first and third detector and the particle angle between the first and second detector and between the third and fourth detectors.

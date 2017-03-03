@@ -1,0 +1,24 @@
+#set track verbosity
+/tracking/verbose 0
+
+#initialize detector and physics tables
+/mydet/setWorldMaterial G4_AIR
+/mydet/setConfiguration NoCollimator
+/run/initialize
+
+#set gps properties
+/gps/ene/type Gauss
+/gps/ene/mono 220. MeV
+/gps/ene/sigma 0.7 MeV
+/gps/particle proton
+
+/gps/ang/type beam2d
+/gps/ang/sigma_x 0. mrad
+/gps/ang/sigma_y 0. mrad
+/gps/ang/rot1 1 0 0
+/gps/ang/rot2 0 -1 0
+
+/gps/pos/type Point
+
+#start run
+/run/beamOn 10000000

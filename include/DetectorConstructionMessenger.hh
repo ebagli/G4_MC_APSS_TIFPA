@@ -3,6 +3,11 @@
 // * License and Disclaimer                                           *
 // *                                                                  *
 // * The  Geant4 software  is  copyright of the Copyright Holders  of *
+//
+// ********************************************************************
+// * License and Disclaimer                                           *
+// *                                                                  *
+// * The  Geant4 software  is  copyright of the Copyright Holders  of *
 // * the Geant4 Collaboration.  It is provided  under  the terms  and *
 // * conditions of the Geant4 Software License,  included in the file *
 // * LICENSE and available at  http://cern.ch/geant4/license .  These *
@@ -25,48 +30,33 @@
 // --------------------------------------------------------------
 //
 
-#ifndef DetectorConstruction_h
-#define DetectorConstruction_h 1
-#endif
+#ifndef DetectorConstructionMessenger_h
+#define DetectorConstructionMessenger_h 1
 
-#include "G4VUserDetectorConstruction.hh"
+class DetectorConstruction;
+class G4UIdirectory;
+class G4UIcmdWithAString;
 
-#include "G4LogicalVolume.hh"
-#include "G4VPhysicalVolume.hh"
-#include "G4RunManager.hh"
-#include "DetectorConstructionMessenger.hh"
-
+#include "G4UImessenger.hh"
 #include "globals.hh"
 
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-class DetectorConstruction : public G4VUserDetectorConstruction
+class DetectorConstructionMessenger: public G4UImessenger
 {
-public:
-    
-    DetectorConstruction();
-    ~DetectorConstruction();
-    
-    void DefineMaterials();
-    G4VPhysicalVolume* Construct();
+  public:
+    DetectorConstructionMessenger(DetectorConstruction* mpga);
+    ~DetectorConstructionMessenger();
 
-private:
-    void ConstructSDandField();
-    
-private:
-    DetectorConstructionMessenger* fMessenger;
-    
-private:
-    G4String fWorldMaterial;
-    G4String fConfiguration;
-    
-public:
-    void SetWorldMaterial(G4String mat) {fWorldMaterial = mat;};
-    G4String GetWorldMaterial() {return fWorldMaterial;};
+    virtual void SetNewValue(G4UIcommand * command,G4String newValues);
+    virtual G4String GetCurrentValue(G4UIcommand * command);
 
-    void SetConfiguration(G4String config) {fConfiguration = config;};
-    G4String GetConfiguration() {return fConfiguration;};
+  private:
+    DetectorConstruction * fTarget;
+
+    G4UIdirectory* fMyDirectory;
+    G4UIcmdWithAString*  fWorldMaterialCmd;
+    G4UIcmdWithAString*  fConfiguration;
 };
+
+#endif
 
 

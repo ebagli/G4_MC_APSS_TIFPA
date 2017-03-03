@@ -48,11 +48,16 @@
 #include "G4Colour.hh"
 
 #include "SensitiveDetector.hh"
+#include "DetectorConstructionMessenger.hh"
 #include "G4SDManager.hh"
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-DetectorConstruction::DetectorConstruction(){;}
+DetectorConstruction::DetectorConstruction():
+fWorldMaterial("G4_Galactic"),
+fConfiguration(""){
+    fMessenger = new DetectorConstructionMessenger(this);
+}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo.....
 
@@ -65,11 +70,21 @@ void DetectorConstruction::DefineMaterials(){;}
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 G4VPhysicalVolume* DetectorConstruction::Construct(){
-    //** World **//
-    //G4Material* Galactic = G4NistManager::Instance()->FindOrBuildMaterial("G4_Galactic");
-    G4Material* Air = G4NistManager::Instance()->FindOrBuildMaterial("G4_AIR");
+    // Definition of vacuum
+    G4double z = 7.;
+    G4double a = 14.007*CLHEP::g/CLHEP::mole;
+    G4double density = CLHEP::universe_mean_density;
+    G4double temperature = 300.*CLHEP::kelvin;
+    G4double pressure;
     
-    G4Material* worldMaterial  = Air;
+    pressure = 1.E-3 * 1.E-3 * CLHEP::bar;
+    G4Material* Vacuum = new G4Material("Vacuum", z , a , density, kStateGas,temperature,pressure);
+    pressure = 1.E-9 * 1.E-3 * CLHEP::bar;
+    G4Material* UltraVacuum = new G4Material("UltraVacuum", z , a , density, kStateGas,temperature,pressure);
+    
+    
+    //** World **//
+    G4Material* worldMaterial = G4NistManager::Instance()->FindOrBuildMaterial(fWorldMaterial);
     G4double worldSizeXY = 20. * CLHEP::meter;
     G4double worldSizeZ = 20. * CLHEP::meter;
     
@@ -95,7 +110,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
     G4Material* W     = G4NistManager::Instance()->FindOrBuildMaterial("G4_W");
     G4double collRin   = 0.200 * CLHEP::mm;
     G4double collRout  = 5. * CLHEP::cm;
-    G4double collL     = 5. * CLHEP::cm;
+    G4double collL     = 2.5 * CLHEP::cm;
     G4double coll2dist = 2. * CLHEP::m + collL;
     
     G4Tubs* collSolid = new G4Tubs("coll.solid",
@@ -109,22 +124,23 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
                                                      W,
                                                      "coll.logic");
     
+    if(fConfiguration!="NoCollimator"){
+        new G4PVPlacement(0,
+                          G4ThreeVector(0.,0.,collL*0.5),
+                          collLogic,
+                          "coll.physic",
+                          worldLogic,
+                          false,
+                          0);
     
-    new G4PVPlacement(0,
-                      G4ThreeVector(0.,0.,collL*0.5),
-                      collLogic,
-                      "coll.physic",
-                      worldLogic,
-                      false,
-                      0);
-    
-    new G4PVPlacement(0,
-                      G4ThreeVector(0.,0.,collL*0.5 + coll2dist),
-                      collLogic,
-                      "coll.physic",
-                      worldLogic,
-                      false,
-                      1);
+        new G4PVPlacement(0,
+                          G4ThreeVector(0.,0.,collL*0.5 + coll2dist),
+                          collLogic,
+                          "coll.physic",
+                          worldLogic,
+                          false,
+                          1);
+    }
     
     //** Lead Bricks instantiation **//
     G4Material* Pb     = G4NistManager::Instance()->FindOrBuildMaterial("G4_Pb");
@@ -172,7 +188,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
                                          lbZ/2.);
     
     G4LogicalVolume* lbInterspaceLogic = new G4LogicalVolume(lbInterspaceSolid,
-                                                             worldMaterial,
+                                                             Pb,
                                                              "lbInt.logic");
     
     new G4PVPlacement(0,

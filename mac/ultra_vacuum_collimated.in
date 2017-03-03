@@ -1,0 +1,26 @@
+#set track verbosity
+/tracking/verbose 0
+
+#initialize detector and physics tables
+/mydet/setWorldMaterial UltraVacuum
+/run/initialize
+
+#set gps properties
+/gps/ene/type Gauss
+/gps/ene/mono 220. MeV
+/gps/ene/sigma 0.7 MeV
+/gps/particle proton
+
+/gps/ang/type beam2d
+/gps/ang/sigma_x 1. mrad
+/gps/ang/sigma_y 1. mrad
+/gps/ang/rot1 1 0 0
+/gps/ang/rot2 0 -1 0
+
+/gps/pos/type Plane
+/gps/pos/type Circle
+/gps/pos/sigma_r 0.2 mm
+
+
+#start run
+/run/beamOn 10000000
