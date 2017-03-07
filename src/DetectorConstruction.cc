@@ -73,12 +73,14 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
     // Definition of vacuum
     G4double z = 7.;
     G4double a = 14.007*CLHEP::g/CLHEP::mole;
-    G4double density = CLHEP::universe_mean_density;
+    G4double density = 0.00120479;
     G4double temperature = 300.*CLHEP::kelvin;
     G4double pressure;
     
     pressure = 1.E-3 * 1.E-3 * CLHEP::bar;
+    density = 0.00120479 * 1.E-3 * 1.E-3 * CLHEP::g/CLHEP::cm3;
     G4Material* Vacuum = new G4Material("Vacuum", z , a , density, kStateGas,temperature,pressure);
+    density = 0.00120479 * 1.E-9 * 1.E-3 * CLHEP::g/CLHEP::cm3;
     pressure = 1.E-9 * 1.E-3 * CLHEP::bar;
     G4Material* UltraVacuum = new G4Material("UltraVacuum", z , a , density, kStateGas,temperature,pressure);
     
@@ -208,10 +210,11 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
                       1);
 
     //** Detectors instantiation **//
-    G4double ssdSizeXY = 500. * CLHEP::centimeter;
+    G4double ssdSizeXY = 10. * CLHEP::centimeter;
     G4double ssdSizeZ  = 1. * CLHEP::millimeter;
     G4double det1dist  = coll2dist + collL * 0.5 + 15. * CLHEP::cm;
     G4double det2dist  = coll2dist + collL * 0.5 + 3. * CLHEP::m;
+    G4cout << det1dist/CLHEP::mm << " " << det2dist/CLHEP::mm << G4endl;
     
     G4double detABdist = 1. * CLHEP::centimeter;
     

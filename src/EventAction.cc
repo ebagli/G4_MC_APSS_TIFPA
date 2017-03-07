@@ -99,7 +99,7 @@ void EventAction::EndOfEventAction(const G4Event* evt){
         }
     }
 
-    if(bTotalHits > 1){
+    if(bTotalHits > 3){
         G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
         G4double angXin  = (ssd[1].x() - ssd[0].x()) / (ssd[1].z() - ssd[0].z());
         G4double angYin  = (ssd[1].y() - ssd[0].y()) / (ssd[1].z() - ssd[0].z());
