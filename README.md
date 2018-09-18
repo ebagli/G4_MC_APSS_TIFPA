@@ -1,4 +1,5 @@
 # TIFPA Line Geant4 Simulation
+Enrico Bagli - INFN (Italy) bagli@fe.infn.it
 
 ## 1. Introduction
 
